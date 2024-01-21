@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [text, setText] = useState("");
+  const [memos, setMemos] = useState([]);
+
+  const onClickAdd = () => {
+    setMemos([...memos, text]);
+    setText(""); // 入力後、Stateをクリア
+  };
+
+  const onInputChange = (e) => {
+    setText(e.target.value);
+  };
+
+  const onClickDelete = (index) => {
+    const newMemos = [...memos];
+    newMemos.splice(index, 1);
+    setMemos(newMemos);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>簡単メモアプリ</h1>
+      <input
+        type="text"
+        id="input"
+        value={text}
+        onChange={onInputChange}
+      ></input>
+      <button onClick={onClickAdd}>追加</button>
+      <div>
+        {memos.map((memo, index) => (
+          <div key={index}>
+            <p>{memo}</p>
+            <button onClick={() => onClickDelete(index)}>削除</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
